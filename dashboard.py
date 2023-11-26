@@ -111,7 +111,7 @@ print(data_grouped_result)
 
 # plot Frequency Vs Count Total Rental Bike
 st.header('Graph Frequency Vs Count Total Rental Bike')
-
+fig, ax = plt.subplots(figsize=(12, 5))
 
 # Menggabungkan data
 data_grouped = all_data.groupby(by=["mnth_x"]).agg({
@@ -121,29 +121,30 @@ data_grouped = all_data.groupby(by=["mnth_x"]).agg({
 })
 # menggabungkan keseluruhan cnt_x
 cnt_x_data = data_grouped["cnt_x"]
-plt.hist(cnt_x_data, bins=20, edgecolor='black')
+ax = plt.hist(cnt_x_data, bins=20, edgecolor='black')
 plt.title('Graph Frequency Vs Count Total Rental Bike')
 plt.xlabel('Total Rental Bike Including')
 plt.ylabel('Frequency')
 plt.show()
-#st.pyplot(fig)
+st.pyplot(fig)
 
 
 # Plot grafik hubungan bulan dan total rental
 st.subheader("Plot grafik hubungan bulan dan total rental")
+fig, ax = plt.subplots(figsize=(12, 5))
 all_rental_month = all_data.groupby(by=["mnth_x"]).agg({
     "cnt_x": "sum"
 }).reset_index()
 
 # Merubah bulan menjadi bulan 1-12
 all_rental_month = all_rental_month.sort_values(by="mnth_x")
-plt.figure(figsize=(12, 5))
-plt.plot(all_rental_month["mnth_x"], all_rental_month["cnt_x"], marker='o')
+
+ax = plt.plot(all_rental_month["mnth_x"], all_rental_month["cnt_x"], marker='o')
 plt.title('Total Rental Bike Including per Month')
 plt.xlabel('Month')
 plt.ylabel('Total Rental Bike Including')
 plt.show()
-#st.pyplot(fig)
+st.pyplot(fig)
 
 # Rental Bike Including based on Day Type and Hour of the Day
 st.subheader("Rental Bike Including based on Day Type and Hour of the Day")
@@ -157,22 +158,14 @@ data_grouped = day.groupby(by=["day_type", "mnth"]).agg({
     "cnt": "sum"
 }).reset_index()
 
-plt.figure(figsize=(15, 6))
+fig, ax = plt.subplots(figsize=(12, 6))
 sns.lineplot(x="mnth", y="cnt", hue="day_type", data=data_grouped, palette="viridis")
 plt.title('Rental Bike Including based on Day Type and Hour of the Day')
 plt.xlabel('Month')
 plt.ylabel('Total Rental Bike Including')
 plt.legend(title="Day Type", loc="upper right")
 plt.show()
-#st.pyplot(fig)
-
-# Plotting histograms
-g = sns.FacetGrid(data_grouped, col="day_type", col_wrap=3, height=5)
-g.map(plt.hist, 'cnt', bins=20, edgecolor='black')
-g.set_axis_labels('Rental Bike Including', 'Frequency')
-g.set_titles(col_template="{col_name}")
-plt.show()
-
+st.pyplot(fig)
 
 # Total Rental Bike Including per Hour
 st.subheader("Total Rental Bike Including per Hour")
@@ -183,14 +176,13 @@ all_rental_month = all_data.groupby(by=["hr"]).agg({
 
 # Merubah bulan menjadi bulan 1-12
 all_rental_month = all_rental_month.sort_values(by="hr")
-plt.figure(figsize=(12, 5))
-plt.plot(all_rental_month["hr"], all_rental_month["cnt_y"], marker='o')
+fig, ax = plt.subplots(figsize=(12, 5))
+ax = plt.plot(all_rental_month["hr"], all_rental_month["cnt_y"], marker='o')
 plt.title('Total Rental Bike Including per Hour')
 plt.xlabel('Hour')
 plt.ylabel('Total Rental Bike Including')
 plt.show()
-
-#st.pyplot(fig)
+st.pyplot(fig)
 
 
 # Total Rental Bike Including for 2 Month
@@ -202,14 +194,13 @@ all_rental_month = all_data.groupby(by=["mnth_y"]).agg({
 
 # gorup data bulan
 all_rental_month = all_rental_month.sort_values(by="mnth_y")
-plt.figure(figsize=(10, 6))
-plt.plot(all_rental_month["mnth_y"], all_rental_month["cnt_y"], marker='o')
+fig, ax = plt.subplots(figsize=(12, 5))
+ax = plt.plot(all_rental_month["mnth_y"], all_rental_month["cnt_y"], marker='o')
 plt.title('Total Rental Bike Including for 2 Month')
 plt.xlabel('Month')
 plt.ylabel('Total Rental Bike Including')
 plt.show()
-
-#st.pyplot(fig)
+st.pyplot(fig)
 
 
 # Rental Bike Including based on Day Type and Hour of the Day
@@ -223,20 +214,13 @@ hour.loc[(hour['holiday'] == 0) & (hour['workingday'] == 0), 'day_type'] = 'week
 data_grouped = hour.groupby(by=["day_type", "hr"]).agg({
     "cnt": "sum"
 }).reset_index()
-plt.figure(figsize=(15, 6))
-sns.lineplot(x="hr", y="cnt", hue="day_type", data=data_grouped, palette="viridis")
+fig, ax = plt.subplots(figsize=(35, 15))
+ax = sns.lineplot(x="hr", y="cnt", hue="day_type", data=data_grouped, palette="viridis")
 plt.title('Rental Bike Including based on Day Type and Hour of the Day')
 plt.xlabel('Hour')
 plt.ylabel('Total Rental Bike Including')
 plt.legend(title="Day Type", loc="upper right")
 plt.show()
-
-#st.pyplot(fig)
-
-g = sns.FacetGrid(data_grouped, col="day_type", col_wrap=3, height=5)
-g.map(plt.hist, 'cnt', bins=20, edgecolor='black')
-g.set_axis_labels('Rental Bike Including', 'Frequency')
-g.set_titles(col_template="{col_name}")
-plt.show()
+st.pyplot(fig)
 
 st.caption('Copyright © Adnan Cindyana 2023')
